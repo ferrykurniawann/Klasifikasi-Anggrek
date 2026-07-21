@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Klasifikasi</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            max-width: 640px;
+            width: 90%;
+        }
+        h1 {
+            color: #2d3436;
+            font-size: 26px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .result-card {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .image-section {
+            flex: 1;
+            min-width: 200px;
+        }
+        .image-section img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .prediction-section {
+            flex: 1;
+            min-width: 240px;
+        }
+        .label-badge {
+            display: inline-block;
+            background: #6c5ce7;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .confidence-text {
+            color: #636e72;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .confidence-text span {
+            color: #2d3436;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        .class-list { list-style: none; }
+        .class-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f2f6;
+        }
+        .class-item:last-child { border-bottom: none; }
+        .class-name {
+            width: 140px;
+            font-weight: 600;
+            color: #2d3436;
+            font-size: 14px;
+        }
+        .bar-container {
+            flex: 1;
+            height: 20px;
+            background: #f1f2f6;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 12px;
+        }
+        .bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.8s ease;
+            background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+        }
+        .bar.active { background: linear-gradient(90deg, #00b894, #00cec9); }
+        .class-prob {
+            width: 48px;
+            text-align: right;
+            font-weight: 700;
+            font-size: 14px;
+            color: #2d3436;
+        }
+        .btn-back {
+            display: block;
+            text-align: center;
+            background: #dfe6e9;
+            color: #2d3436;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-top: 24px;
+            transition: background 0.3s;
+        }
+        .btn-back:hover { background: #b2bec3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>&#127800; Hasil Klasifikasi</h1>
+        <div class="result-card">
+            <div class="image-section">
+                <img src="/uploads/{{ filename }}"
+                     alt="Gambar Anggrek">
+            </div>
+            <div class="prediction-section">
+                <div class="label-badge">{{ label }}</div>
+                <div class="confidence-text">
+                    Tingkat Keyakinan: <span>{{ "%.1f"|format(confidence * 100) }}%</span>
+                </div>
+                <ul class="class-list">
+                    {% for name, prob in all_probs.items() %}
+                    <li class="class-item">
+                        <span class="class-name">{{ name }}</span>
+                        <div class="bar-container">
+                            <div class="bar{% if name == label %} active{% endif %}"
+                                 style="width: {{ prob * 100 }}%"></div>
+                        </div>
+                        <span class="class-prob">{{ "%.1f"|format(prob * 100) }}%</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <a href="/" class="btn-back">&#8592; Kembali</a>
+    </div>
+</body>
+</html>
