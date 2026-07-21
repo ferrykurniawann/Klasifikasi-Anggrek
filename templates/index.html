@@ -44,13 +44,18 @@
 
         /* ---------- Header ---------- */
         header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 100;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 22px 48px;
             border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(12px);
+            background: rgba(8, 11, 20, 0.75);
         }
+        .wrap { padding-top: 82px; }
         .logo {
             font-family: 'Sora', sans-serif;
             font-weight: 800;

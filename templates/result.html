@@ -41,12 +41,18 @@
         .wrap { position: relative; z-index: 1; }
 
         header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 100;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 22px 48px;
             border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            background: rgba(8, 11, 20, 0.75);
         }
+        .wrap { padding-top: 82px; }
         .logo {
             font-family: 'Sora', sans-serif;
             font-weight: 800;
@@ -248,21 +254,10 @@
             <div>
                 <div class="col-head">
                     <div class="section-title">&#128444; Citra Input</div>
-                    <div class="id-tag">ID: {{ pred_id }}</div>
                 </div>
                 <div class="image-frame">
                     <img src="/uploads/{{ filename }}" alt="Gambar Anggrek">
                     <span class="source-tag">Source: User Upload</span>
-                </div>
-                <div class="meta-row">
-                    <div class="meta">
-                        <div class="k">Resolution</div>
-                        <div class="v">{{ resolution }}</div>
-                    </div>
-                    <div class="meta">
-                        <div class="k">Process Time</div>
-                        <div class="v">{{ process_time }}</div>
-                    </div>
                 </div>
             </div>
 
@@ -301,9 +296,9 @@
     </main>
 
     <section class="desc">
-        <div class="section-title"><span class="icon">&#129514;</span> Deskripsi</div>
+        <div class="section-title"><span class="icon">&#129514;</span> Hasil Identifikasi</div>
         <h4>{{ label }}</h4>
-        <p>{{ description }}</p>
+        <p>Spesies anggrek ini diidentifikasi dengan tingkat keyakinan <strong>{{ "%.1f"|format(confidence * 100) }}%</strong> menggunakan model computer vision berbasis MobileNetV2 yang telah dilatih pada dataset khusus anggrek.</p>
     </section>
 
     <footer>
