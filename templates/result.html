@@ -3,148 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hasil Klasifikasi</title>
+    <title>OrchidAI &middot; Classification Results</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #080b14;
+            --panel: #12162a;
+            --panel-2: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #eef1f8;
+            --muted: #8b93a7;
+            --faint: #5b6478;
+            --accent: #6366f1;
+            --cyan: #22d3ee;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
+            background: var(--bg);
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(45% 40% at 8% 6%, rgba(99, 102, 241, 0.22), transparent 60%),
+                radial-gradient(50% 45% at 100% 62%, rgba(34, 211, 238, 0.14), transparent 55%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .wrap { position: relative; z-index: 1; }
+
+        header {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 22px 48px;
+            border-bottom: 1px solid var(--border);
         }
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            max-width: 640px;
-            width: 90%;
+        .logo {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #c7d2fe, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        h1 {
-            color: #2d3436;
-            font-size: 26px;
-            text-align: center;
-            margin-bottom: 24px;
+        nav { display: flex; gap: 34px; }
+        nav a {
+            color: var(--muted); text-decoration: none;
+            font-size: 15px; font-weight: 500; padding-bottom: 4px;
+            transition: color 0.2s;
         }
-        .result-card {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
+        nav a:hover { color: var(--text); }
+        nav a.active { color: var(--text); border-bottom: 2px solid var(--accent); }
+        .btn-cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(90deg, #3b5bfd, #6d5efc);
+            color: #fff; border: none; padding: 12px 22px; border-radius: 12px;
+            font-size: 14px; font-weight: 600; text-decoration: none;
+            box-shadow: 0 8px 24px rgba(59, 91, 253, 0.35);
         }
-        .image-section {
-            flex: 1;
-            min-width: 200px;
-        }
-        .image-section img {
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-        }
-        .prediction-section {
-            flex: 1;
-            min-width: 240px;
-        }
-        .label-badge {
+
+        main { max-width: 1120px; margin: 0 auto; padding: 48px 48px 0; }
+
+        .badge {
             display: inline-block;
-            background: #6c5ce7;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
+            padding: 7px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(34, 211, 238, 0.35);
+            background: rgba(34, 211, 238, 0.08);
+            color: var(--cyan);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
         }
-        .confidence-text {
-            color: #636e72;
-            font-size: 14px;
+        .head { text-align: center; margin-bottom: 52px; }
+        .head h1 {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 56px;
+            letter-spacing: -1.5px;
+            margin: 18px 0 16px;
+        }
+        .head p { color: var(--muted); font-size: 16px; line-height: 1.6; max-width: 620px; margin: 0 auto; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 48px;
+            align-items: start;
+        }
+        .section-title {
+            display: flex; align-items: center; gap: 10px;
+            font-family: 'Sora', sans-serif; font-weight: 600; font-size: 22px;
+        }
+        .col-head {
+            display: flex; align-items: center; justify-content: space-between;
             margin-bottom: 20px;
         }
-        .confidence-text span {
-            color: #2d3436;
-            font-weight: 700;
-            font-size: 18px;
-        }
-        .class-list { list-style: none; }
-        .class-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #f1f2f6;
-        }
-        .class-item:last-child { border-bottom: none; }
-        .class-name {
-            width: 140px;
-            font-weight: 600;
-            color: #2d3436;
-            font-size: 14px;
-        }
-        .bar-container {
-            flex: 1;
-            height: 20px;
-            background: #f1f2f6;
-            border-radius: 10px;
+        .id-tag { color: var(--faint); font-size: 14px; letter-spacing: 0.5px; }
+
+        /* ---- Left column ---- */
+        .image-frame {
+            position: relative;
+            border-radius: 16px;
             overflow: hidden;
-            margin: 0 12px;
+            border: 1px solid var(--border);
         }
-        .bar {
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.8s ease;
-            background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+        .image-frame img { width: 100%; display: block; aspect-ratio: 1/1; object-fit: cover; }
+        .source-tag {
+            position: absolute; left: 16px; bottom: 14px;
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 13px; font-weight: 500;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
         }
-        .bar.active { background: linear-gradient(90deg, #00b894, #00cec9); }
-        .class-prob {
-            width: 48px;
-            text-align: right;
-            font-weight: 700;
-            font-size: 14px;
-            color: #2d3436;
+        .source-tag::before {
+            content: ''; width: 8px; height: 8px; border-radius: 50%;
+            background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
         }
+        .meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+        .meta {
+            background: var(--panel-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 18px;
+        }
+        .meta .k { color: var(--faint); font-size: 12.5px; margin-bottom: 6px; }
+        .meta .v { font-size: 16px; font-weight: 600; }
+
+        /* ---- Right column ---- */
+        .genus-card {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 26px 30px;
+            border-radius: 16px;
+            border: 1.5px solid rgba(34, 211, 238, 0.55);
+            background: linear-gradient(180deg, rgba(34, 211, 238, 0.06), rgba(34, 211, 238, 0.01));
+            box-shadow: 0 0 40px rgba(34, 211, 238, 0.12), inset 0 0 30px rgba(34, 211, 238, 0.05);
+        }
+        .genus-card .k { color: var(--cyan); font-size: 12px; font-weight: 600; letter-spacing: 1.5px; }
+        .genus-card .name { font-family: 'Sora', sans-serif; font-size: 34px; font-weight: 700; margin-top: 6px; }
+        .genus-card .conf { text-align: right; }
+        .genus-card .conf .pct { font-family: 'Sora', sans-serif; font-size: 40px; font-weight: 800; }
+        .genus-card .conf .lbl { color: var(--muted); font-size: 13px; }
+
+        .xref-title { color: var(--faint); font-size: 12.5px; font-weight: 600; letter-spacing: 1.5px; margin: 30px 0 18px; }
+        .prob {
+            padding: 12px 0;
+        }
+        .prob .top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .prob .nm { font-size: 15px; font-weight: 600; }
+        .prob.dim .nm, .prob.dim .pv { color: var(--faint); }
+        .prob .pv { font-size: 13px; color: var(--muted); font-weight: 500; }
+        .bar-track {
+            height: 6px; border-radius: 999px;
+            background: rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%; border-radius: 999px;
+            background: linear-gradient(90deg, #6366f1, #22d3ee);
+        }
+        .prob.dim .bar-fill { background: rgba(255,255,255,0.14); }
+
         .btn-back {
-            display: block;
-            text-align: center;
-            background: #dfe6e9;
-            color: #2d3436;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 600;
-            margin-top: 24px;
-            transition: background 0.3s;
+            display: block; text-align: center;
+            margin-top: 28px;
+            padding: 16px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--text); text-decoration: none;
+            font-size: 15px; font-weight: 600;
+            transition: background 0.2s;
         }
-        .btn-back:hover { background: #b2bec3; }
+        .btn-back:hover { background: rgba(255, 255, 255, 0.09); }
+
+        /* ---- Description ---- */
+        .desc {
+            max-width: 1120px;
+            margin: 56px auto 0;
+            padding: 0 48px;
+        }
+        .desc .section-title { margin-bottom: 16px; }
+        .desc .icon {
+            width: 40px; height: 40px; border-radius: 11px;
+            display: grid; place-items: center;
+            background: rgba(34, 211, 238, 0.1); color: var(--cyan); font-size: 18px;
+        }
+        .desc h4 { font-family: 'Sora', sans-serif; font-weight: 600; font-size: 17px; margin-bottom: 8px; }
+        .desc p { color: var(--muted); font-size: 15px; line-height: 1.7; max-width: 900px; }
+
+        footer {
+            max-width: 1120px;
+            margin: 80px auto 0;
+            padding: 30px 48px;
+            border-top: 1px solid var(--border);
+            display: flex; align-items: flex-end; justify-content: space-between;
+        }
+        footer .brand { font-family: 'Sora', sans-serif; font-weight: 700; color: #c7d2fe; font-size: 18px; }
+        footer .copy { color: var(--muted); font-size: 13px; margin-top: 4px; }
+        footer .links { display: flex; gap: 28px; }
+        footer .links a { color: var(--muted); text-decoration: none; font-size: 13.5px; }
+        footer .links a:hover { color: var(--text); }
+
+        @media (max-width: 900px) {
+            header { padding: 18px 22px; flex-wrap: wrap; gap: 14px; }
+            main { padding: 34px 22px 0; }
+            .head h1 { font-size: 38px; }
+            .grid { grid-template-columns: 1fr; gap: 34px; }
+            .desc, footer { padding-left: 22px; padding-right: 22px; }
+            footer { flex-direction: column; gap: 18px; align-items: flex-start; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>&#127800; Hasil Klasifikasi</h1>
-        <div class="result-card">
-            <div class="image-section">
-                <img src="/uploads/{{ filename }}"
-                     alt="Gambar Anggrek">
-            </div>
-            <div class="prediction-section">
-                <div class="label-badge">{{ label }}</div>
-                <div class="confidence-text">
-                    Tingkat Keyakinan: <span>{{ "%.1f"|format(confidence * 100) }}%</span>
+<div class="wrap">
+    <header>
+        <div class="logo">OrchidAI</div>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/history" class="active">History</a>
+        </nav>
+        <a href="/" class="btn-cta">&#10022; Analyze Orchid</a>
+    </header>
+
+    <main>
+        <div class="head">
+            <span class="badge">ANALYSIS COMPLETE</span>
+            <h1>Classification Results</h1>
+            <p>Our neural engine has successfully identified the specimen with high confidence based on floral structural markers and color distribution.</p>
+        </div>
+
+        <div class="grid">
+            <!-- Left -->
+            <div>
+                <div class="col-head">
+                    <div class="section-title">&#128444; Citra Input</div>
+                    <div class="id-tag">ID: {{ pred_id }}</div>
                 </div>
-                <ul class="class-list">
-                    {% for name, prob in all_probs.items() %}
-                    <li class="class-item">
-                        <span class="class-name">{{ name }}</span>
-                        <div class="bar-container">
-                            <div class="bar{% if name == label %} active{% endif %}"
-                                 style="width: {{ prob * 100 }}%"></div>
-                        </div>
-                        <span class="class-prob">{{ "%.1f"|format(prob * 100) }}%</span>
-                    </li>
-                    {% endfor %}
-                </ul>
+                <div class="image-frame">
+                    <img src="/uploads/{{ filename }}" alt="Gambar Anggrek">
+                    <span class="source-tag">Source: User Upload</span>
+                </div>
+                <div class="meta-row">
+                    <div class="meta">
+                        <div class="k">Resolution</div>
+                        <div class="v">{{ resolution }}</div>
+                    </div>
+                    <div class="meta">
+                        <div class="k">Process Time</div>
+                        <div class="v">{{ process_time }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right -->
+            <div>
+                <div class="col-head">
+                    <div class="section-title">&#128200; Hasil Klasifikasi</div>
+                </div>
+                <div class="genus-card">
+                    <div>
+                        <div class="k">IDENTIFIED GENUS</div>
+                        <div class="name">{{ label }}</div>
+                    </div>
+                    <div class="conf">
+                        <div class="pct">{{ "%.0f"|format(confidence * 100) }}%</div>
+                        <div class="lbl">Confidence Level</div>
+                    </div>
+                </div>
+
+                <div class="xref-title">CROSS-REFERENCE PROBABILITIES</div>
+                {% for name, prob in all_probs.items() if name != label %}
+                <div class="prob {% if prob < 0.02 %}dim{% endif %}">
+                    <div class="top">
+                        <span class="nm">{{ name }}</span>
+                        <span class="pv">{% if prob < 0.01 %}&lt; 1%{% else %}{{ "%.1f"|format(prob * 100) }}%{% endif %}</span>
+                    </div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width: {{ [prob * 100, 2]|max }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <a href="/" class="btn-back">&#8592; Kembali</a>
             </div>
         </div>
-        <a href="/" class="btn-back">&#8592; Kembali</a>
-    </div>
+    </main>
+
+    <section class="desc">
+        <div class="section-title"><span class="icon">&#129514;</span> Deskripsi</div>
+        <h4>{{ label }}</h4>
+        <p>{{ description }}</p>
+    </section>
+
+    <footer>
+        <div>
+            <div class="brand">OrchidAI</div>
+            <div class="copy">&copy; 2024 OrchidAI &middot; v2.4.0 High-Fidelity Neural Engine</div>
+        </div>
+        <div class="links">
+            <a href="#">Documentation</a>
+            <a href="#">API Status</a>
+            <a href="#">Privacy Protocol</a>
+        </div>
+    </footer>
+</div>
 </body>
 </html>

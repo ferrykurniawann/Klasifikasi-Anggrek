@@ -3,114 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riwayat Prediksi</title>
+    <title>OrchidAI &middot; Riwayat Prediksi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #080b14;
+            --panel: #12162a;
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #eef1f8;
+            --muted: #8b93a7;
+            --faint: #5b6478;
+            --accent: #6366f1;
+            --cyan: #22d3ee;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
+            background: var(--bg);
             min-height: 100vh;
-            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
         }
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            max-width: 800px;
-            margin: 0 auto;
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background:
+                radial-gradient(45% 40% at 8% 6%, rgba(99, 102, 241, 0.20), transparent 60%),
+                radial-gradient(50% 45% at 100% 70%, rgba(34, 211, 238, 0.10), transparent 55%);
         }
-        h1 {
-            color: #2d3436;
-            font-size: 26px;
-            text-align: center;
-            margin-bottom: 24px;
+        .wrap { position: relative; z-index: 1; }
+
+        header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 22px 48px; border-bottom: 1px solid var(--border);
         }
-        .empty {
-            text-align: center;
-            color: #b2bec3;
-            padding: 40px;
-            font-size: 16px;
+        .logo {
+            font-family: 'Sora', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #c7d2fe, #a78bfa);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
         }
+        nav { display: flex; gap: 34px; }
+        nav a { color: var(--muted); text-decoration: none; font-size: 15px; font-weight: 500; padding-bottom: 4px; transition: color 0.2s; }
+        nav a:hover { color: var(--text); }
+        nav a.active { color: var(--text); border-bottom: 2px solid var(--accent); }
+        .btn-cta {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(90deg, #3b5bfd, #6d5efc);
+            color: #fff; padding: 12px 22px; border-radius: 12px;
+            font-size: 14px; font-weight: 600; text-decoration: none;
+            box-shadow: 0 8px 24px rgba(59, 91, 253, 0.35);
+        }
+
+        main { max-width: 880px; margin: 0 auto; padding: 56px 24px 0; }
+        .head { text-align: center; margin-bottom: 40px; }
+        .badge {
+            display: inline-block; padding: 7px 18px; border-radius: 999px;
+            border: 1px solid rgba(139, 92, 246, 0.35); background: rgba(139, 92, 246, 0.08);
+            color: #a78bfa; font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+        }
+        .head h1 { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 44px; letter-spacing: -1px; margin: 18px 0 14px; }
+        .head p { color: var(--muted); font-size: 16px; }
+
         .card {
-            display: flex;
-            align-items: center;
-            gap: 16px;
+            display: flex; align-items: center; gap: 20px;
             padding: 16px;
-            border: 1px solid #f1f2f6;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            transition: box-shadow 0.3s;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 14px;
+            transition: border-color 0.2s, transform 0.2s;
         }
-        .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+        .card:hover { border-color: rgba(99, 102, 241, 0.5); transform: translateY(-2px); }
         .card img {
-            width: 72px;
-            height: 72px;
-            border-radius: 8px;
-            object-fit: cover;
-            flex-shrink: 0;
+            width: 76px; height: 76px; border-radius: 12px; object-fit: cover; flex-shrink: 0;
+            border: 1px solid var(--border);
         }
-        .card-body { flex: 1; }
-        .card-label {
-            font-size: 18px;
-            font-weight: 700;
-            color: #6c5ce7;
+        .card-body { flex: 1; min-width: 0; }
+        .card-label { font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 600; }
+        .card-info { font-size: 13px; color: var(--faint); margin-top: 5px; }
+        .card-info .dot { margin: 0 8px; opacity: 0.5; }
+        .card-conf { text-align: right; flex-shrink: 0; padding-right: 6px; }
+        .card-conf .val {
+            font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 700;
+            background: linear-gradient(90deg, #6366f1, #22d3ee);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
         }
-        .card-info {
-            font-size: 13px;
-            color: #636e72;
-            margin-top: 4px;
+        .card-conf .lbl { font-size: 12px; color: var(--faint); margin-top: 2px; }
+
+        .empty {
+            text-align: center; color: var(--muted);
+            padding: 70px 20px;
+            border: 1px dashed var(--border); border-radius: 16px;
         }
-        .card-confidence {
-            text-align: right;
-            flex-shrink: 0;
-        }
-        .card-confidence .val {
-            font-size: 20px;
-            font-weight: 700;
-            color: #00b894;
-        }
-        .card-confidence .lbl {
-            font-size: 12px;
-            color: #b2bec3;
-        }
+        .empty .big { font-size: 34px; margin-bottom: 14px; }
+
         .btn-back {
-            display: block;
-            text-align: center;
-            background: #dfe6e9;
-            color: #2d3436;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 600;
-            margin-top: 24px;
-            transition: background 0.3s;
+            display: block; text-align: center; margin-top: 28px;
+            padding: 15px; border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+            color: var(--text); text-decoration: none; font-size: 15px; font-weight: 600;
+            transition: background 0.2s;
         }
-        .btn-back:hover { background: #b2bec3; }
+        .btn-back:hover { background: rgba(255, 255, 255, 0.09); }
+
+        footer {
+            max-width: 1120px; margin: 80px auto 0; padding: 30px 48px;
+            border-top: 1px solid var(--border);
+            display: flex; align-items: flex-end; justify-content: space-between;
+        }
+        footer .brand { font-family: 'Sora', sans-serif; font-weight: 700; color: #c7d2fe; font-size: 18px; }
+        footer .copy { color: var(--muted); font-size: 13px; margin-top: 4px; }
+        footer .links { display: flex; gap: 28px; }
+        footer .links a { color: var(--muted); text-decoration: none; font-size: 13.5px; }
+        footer .links a:hover { color: var(--text); }
+
+        @media (max-width: 720px) {
+            header { padding: 18px 22px; flex-wrap: wrap; gap: 14px; }
+            .head h1 { font-size: 32px; }
+            .card { flex-wrap: wrap; }
+            footer { flex-direction: column; gap: 18px; align-items: flex-start; padding: 30px 22px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>&#128196; Riwayat Prediksi</h1>
+<div class="wrap">
+    <header>
+        <div class="logo">OrchidAI</div>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/history" class="active">History</a>
+        </nav>
+        <a href="/" class="btn-cta">&#10022; Analyze Orchid</a>
+    </header>
+
+    <main>
+        <div class="head">
+            <span class="badge">PREDICTION LOG</span>
+            <h1>Riwayat Prediksi</h1>
+            <p>Rekam jejak seluruh klasifikasi anggrek yang telah dianalisis.</p>
+        </div>
+
         {% if history %}
             {% for entry in history %}
             <div class="card">
-                <img src="/uploads/{{ entry.filename }}"
-                     alt="{{ entry.filename }}">
+                <img src="/uploads/{{ entry.filename }}" alt="{{ entry.filename }}">
                 <div class="card-body">
                     <div class="card-label">{{ entry.label }}</div>
-                    <div class="card-info">{{ entry.filename }} &middot; {{ entry.timestamp }}</div>
+                    <div class="card-info">{{ entry.filename }}<span class="dot">&middot;</span>{{ entry.timestamp }}</div>
                 </div>
-                <div class="card-confidence">
+                <div class="card-conf">
                     <div class="val">{{ "%.1f"|format(entry.confidence * 100) }}%</div>
-                    <div class="lbl">keyakinan</div>
+                    <div class="lbl">Confidence</div>
                 </div>
             </div>
             {% endfor %}
         {% else %}
-            <div class="empty">Belum ada riwayat prediksi.</div>
+            <div class="empty">
+                <div class="big">&#127800;</div>
+                Belum ada riwayat prediksi.
+            </div>
         {% endif %}
-        <a href="/" class="btn-back">&#8592; Kembali</a>
-    </div>
+
+        <a href="/" class="btn-back">&#8592; Kembali ke Beranda</a>
+    </main>
+
+    <footer>
+        <div>
+            <div class="brand">OrchidAI</div>
+            <div class="copy">&copy; 2024 OrchidAI System. v2.4.0-alpha</div>
+        </div>
+        <div class="links">
+            <a href="#">Documentation</a>
+            <a href="#">API Reference</a>
+            <a href="#">Privacy Protocol</a>
+        </div>
+    </footer>
+</div>
 </body>
 </html>

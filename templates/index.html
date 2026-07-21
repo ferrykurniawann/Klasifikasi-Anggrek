@@ -3,105 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klasifikasi Anggrek</title>
+    <title>OrchidAI &middot; Klasifikasi Anggrek</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #080b14;
+            --bg-2: #0d1120;
+            --panel: rgba(22, 27, 44, 0.55);
+            --panel-solid: #12162a;
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #eef1f8;
+            --muted: #8b93a7;
+            --accent: #6366f1;
+            --accent-2: #8b5cf6;
+            --cyan: #22d3ee;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
+            background: var(--bg);
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(70% 55% at 12% 8%, rgba(59, 78, 209, 0.35), transparent 60%),
+                radial-gradient(60% 50% at 92% 35%, rgba(124, 58, 237, 0.28), transparent 60%),
+                radial-gradient(50% 40% at 50% 100%, rgba(34, 211, 238, 0.06), transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .wrap { position: relative; z-index: 1; }
+
+        /* ---------- Header ---------- */
+        header {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            padding: 22px 48px;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(6px);
         }
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            max-width: 560px;
-            width: 90%;
+        .logo {
+            font-family: 'Sora', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #c7d2fe, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        nav { display: flex; gap: 34px; }
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding-bottom: 4px;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: var(--text); }
+        nav a.active {
+            color: var(--text);
+            border-bottom: 2px solid var(--accent);
+        }
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, #3b5bfd, #6d5efc);
+            color: #fff;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 8px 24px rgba(59, 91, 253, 0.35);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-cta:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(59, 91, 253, 0.5); }
+
+        /* ---------- Hero ---------- */
+        .hero {
+            max-width: 780px;
+            margin: 60px auto 0;
+            padding: 56px 60px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            backdrop-filter: blur(24px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
             text-align: center;
         }
-        h1 {
-            color: #2d3436;
-            font-size: 28px;
-            margin-bottom: 8px;
+        .hero h1 {
+            font-family: 'Sora', sans-serif;
+            font-size: 44px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 14px;
         }
-        .subtitle {
-            color: #636e72;
-            font-size: 14px;
-            margin-bottom: 30px;
+        .hero .sub {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 480px;
+            margin: 0 auto 34px;
         }
-        .upload-area {
-            border: 2px dashed #b2bec3;
+
+        .flash {
+            background: rgba(251, 191, 36, 0.12);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: #fcd34d;
+            padding: 12px 16px;
             border-radius: 12px;
-            padding: 40px 20px;
-            background: #f8f9fa;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+        /* ---------- Upload ---------- */
+        .upload-area {
+            border: 1.5px dashed rgba(255, 255, 255, 0.16);
+            border-radius: 20px;
+            padding: 48px 24px;
+            background: rgba(255, 255, 255, 0.02);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s;
             position: relative;
         }
-        .upload-area:hover { border-color: #6c5ce7; background: #f0edff; }
-        .upload-area.dragover { border-color: #6c5ce7; background: #e8e3ff; }
-        .upload-icon { font-size: 48px; color: #6c5ce7; margin-bottom: 12px; }
-        .upload-text { color: #2d3436; font-size: 16px; font-weight: 600; }
-        .upload-hint { color: #b2bec3; font-size: 13px; margin-top: 8px; }
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: var(--accent-2);
+            background: rgba(139, 92, 246, 0.06);
+        }
+        .upload-icon {
+            width: 62px; height: 62px;
+            margin: 0 auto 20px;
+            display: grid; place-items: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            font-size: 26px;
+        }
+        .upload-text { font-size: 18px; font-weight: 600; }
+        .upload-hint { color: var(--muted); font-size: 13px; margin-top: 8px; }
         input[type="file"] {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
             opacity: 0; cursor: pointer;
         }
-        #preview {
-            max-width: 100%; max-height: 280px; margin-top: 16px;
-            border-radius: 8px; display: none; object-fit: contain;
-        }
-        .btn-predict {
-            background: #6c5ce7;
-            color: white;
-            border: none;
-            padding: 14px 40px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 20px;
-            width: 100%;
-        }
-        .btn-predict:hover { background: #5a4bd1; }
-        .btn-predict:disabled { background: #b2bec3; cursor: not-allowed; }
-        .flash {
-            background: #ffeaa7;
-            color: #2d3436;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            font-size: 14px;
-        }
-        .btn-history {
+        .pick-btn {
             display: inline-block;
-            margin-top: 16px;
-            color: #6c5ce7;
-            text-decoration: none;
+            margin-top: 22px;
+            padding: 11px 26px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
             font-size: 14px;
             font-weight: 600;
-            padding: 8px 20px;
-            border: 2px solid #6c5ce7;
-            border-radius: 8px;
-            transition: all 0.3s;
+            color: var(--text);
         }
-        .btn-history:hover { background: #6c5ce7; color: white; }
-        .footer {
-            margin-top: 24px;
-            font-size: 12px;
-            color: #b2bec3;
+        #preview {
+            max-width: 100%; max-height: 240px; margin-top: 18px;
+            border-radius: 14px; display: none; object-fit: contain;
+        }
+
+        /* ---------- Action buttons ---------- */
+        .actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 26px;
+        }
+        .btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+        }
+        .btn-primary:hover { transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--border);
+            color: var(--text);
+        }
+        .btn-ghost:hover { background: rgba(255, 255, 255, 0.08); }
+
+        /* ---------- Feature cards ---------- */
+        .features {
+            max-width: 1180px;
+            margin: 90px auto 0;
+            padding: 0 48px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+        .feature {
+            background: var(--panel-solid);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 30px;
+        }
+        .feature .icon {
+            width: 46px; height: 46px;
+            display: grid; place-items: center;
+            border-radius: 12px;
+            font-size: 20px;
+            margin-bottom: 22px;
+        }
+        .icon.teal { background: rgba(34, 211, 238, 0.12); color: var(--cyan); }
+        .icon.violet { background: rgba(139, 92, 246, 0.14); color: #a78bfa; }
+        .icon.blue { background: rgba(59, 130, 246, 0.14); color: #60a5fa; }
+        .feature h3 {
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        .feature p { color: var(--muted); font-size: 14.5px; line-height: 1.6; }
+
+        /* ---------- Footer ---------- */
+        footer {
+            max-width: 1180px;
+            margin: 90px auto 0;
+            padding: 32px 48px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+        footer .brand { font-family: 'Sora', sans-serif; font-weight: 700; color: #c7d2fe; font-size: 18px; }
+        footer .copy { color: var(--muted); font-size: 13px; margin-top: 4px; }
+        footer .links { display: flex; gap: 30px; }
+        footer .links a { color: var(--muted); text-decoration: none; font-size: 13.5px; transition: color 0.2s; }
+        footer .links a:hover { color: var(--text); }
+
+        @media (max-width: 860px) {
+            header { padding: 18px 22px; flex-wrap: wrap; gap: 14px; }
+            .hero { margin-top: 34px; padding: 40px 24px; border-radius: 22px; }
+            .hero h1 { font-size: 32px; }
+            .features { grid-template-columns: 1fr; margin-top: 56px; }
+            footer { flex-direction: column; gap: 20px; align-items: flex-start; }
+            .actions { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>&#127800; Klasifikasi Anggrek</h1>
-        <p class="subtitle">Unggah gambar anggrek untuk dikenali jenisnya</p>
+<div class="wrap">
+    <header>
+        <div class="logo">OrchidAI</div>
+        <nav>
+            <a href="/" class="active">Home</a>
+            <a href="/history">History</a>
+        </nav>
+        <a href="#uploadForm" class="btn-cta">&#10022; Analyze Orchid</a>
+    </header>
+
+    <section class="hero">
+        <h1>Klasifikasi Anggrek</h1>
+        <p class="sub">Unggah gambar anggrek untuk dikenali jenisnya menggunakan teknologi computer vision terbaru kami secara instan.</p>
 
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -111,56 +296,86 @@
 
         <form method="POST" enctype="multipart/form-data" id="uploadForm">
             <div class="upload-area" id="dropZone">
-                <div class="upload-icon">&#128247;</div>
-                <div class="upload-text">Klik atau tarik gambar ke sini</div>
-                <div class="upload-hint">PNG, JPG, JPEG, BMP, TIFF</div>
+                <div class="upload-icon">&#9673;</div>
+                <div class="upload-text">Seret &amp; Lepas Gambar</div>
+                <div class="upload-hint">Dukung format JPG, PNG hingga 10MB</div>
+                <div class="pick-btn">Pilih Berkas</div>
                 <input type="file" name="file" id="fileInput" accept="image/*" required>
             </div>
             <img id="preview" alt="Preview">
-            <button type="submit" class="btn-predict" id="btnSubmit" disabled>
-                &#128269; Prediksi
-            </button>
+            <div class="actions">
+                <button type="submit" class="btn btn-primary" id="btnSubmit" disabled>&#10022; Prediksi</button>
+                <a href="/history" class="btn btn-ghost">&#8634; Riwayat Prediksi</a>
+            </div>
         </form>
-        <a href="/history" class="btn-history">&#128196; Riwayat Prediksi</a>
-        <div class="footer">Model: MobileNetV2 &middot; 5 Jenis Anggrek</div>
-    </div>
+    </section>
 
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        const preview = document.getElementById('preview');
-        const btnSubmit = document.getElementById('btnSubmit');
-        const dropZone = document.getElementById('dropZone');
+    <section class="features">
+        <div class="feature">
+            <div class="icon teal">&#9889;</div>
+            <h3>Analisis Cepat</h3>
+            <p>Dapatkan hasil identifikasi spesies anggrek dalam waktu kurang dari 2 detik dengan mesin AI teroptimasi.</p>
+        </div>
+        <div class="feature">
+            <div class="icon violet">&#128737;</div>
+            <h3>Presisi Tinggi</h3>
+            <p>Tingkat akurasi mencapai 97% menggunakan dataset yang divalidasi oleh pakar botani internasional.</p>
+        </div>
+        <div class="feature">
+            <div class="icon blue">&#127760;</div>
+            <h3>5 Jenis</h3>
+            <p>"Cattleya", "Dendrobium", "Grammatophyllum", "Phalaenopsis", "Vanda"</p>
+        </div>
+    </section>
 
-        fileInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    btnSubmit.disabled = false;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+    <footer>
+        <div>
+            <div class="brand">OrchidAI</div>
+            <div class="copy">&copy; 2024 OrchidAI System. v2.4.0-alpha</div>
+        </div>
+        <div class="links">
+            <a href="#">Documentation</a>
+            <a href="#">API Reference</a>
+            <a href="#">Privacy Protocol</a>
+            <a href="#">Terms of Synthesis</a>
+        </div>
+    </footer>
+</div>
 
-        dropZone.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('dragover');
-        });
-        dropZone.addEventListener('dragleave', function() {
-            this.classList.remove('dragover');
-        });
-        dropZone.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                fileInput.files = files;
-                const event = new Event('change');
-                fileInput.dispatchEvent(event);
-            }
-        });
-    </script>
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const dropZone = document.getElementById('dropZone');
+
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                btnSubmit.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    dropZone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        this.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', function () {
+        this.classList.remove('dragover');
+    });
+    dropZone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            fileInput.dispatchEvent(new Event('change'));
+        }
+    });
+</script>
 </body>
 </html>
