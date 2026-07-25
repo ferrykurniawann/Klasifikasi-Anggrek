@@ -10,6 +10,19 @@
       "Phalaenopsis": 0.2854,
       "Vanda": 0.0075
     },
+    "timestamp": "2026-07-25 12:41:36"
+  },
+  {
+    "filename": "C100.jpg",
+    "label": "Cattleya",
+    "confidence": 0.6876,
+    "all_probs": {
+      "Cattleya": 0.6876,
+      "Dendrobium": 0.0095,
+      "Grammatophyllum": 0.0101,
+      "Phalaenopsis": 0.2854,
+      "Vanda": 0.0075
+    },
     "timestamp": "2026-07-22 12:39:20"
   },
   {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OrchidAI &middot; Classification Results</title>
+    <title>OrchidAI &middot; Hasil Klasifikasi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
@@ -118,23 +118,63 @@
         }
         .id-tag { color: var(--faint); font-size: 14px; letter-spacing: 0.5px; }
 
-        /* ---- Left column ---- */
-        .image-frame {
+        /* ---- Left column: before/after slider ---- */
+        .compare {
             position: relative;
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid var(--border);
+            aspect-ratio: 1/1;
+            user-select: none;
+            touch-action: none;
+            cursor: ew-resize;
         }
-        .image-frame img { width: 100%; display: block; aspect-ratio: 1/1; object-fit: cover; }
-        .source-tag {
-            position: absolute; left: 16px; bottom: 14px;
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 13px; font-weight: 500;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+        .compare img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
         }
-        .source-tag::before {
-            content: ''; width: 8px; height: 8px; border-radius: 50%;
-            background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
+        /* AFTER image sits underneath; BEFORE image is clipped on top */
+        .compare .after-layer { z-index: 1; }
+        .compare .before-layer {
+            z-index: 2;
+            clip-path: inset(0 50% 0 0);
+        }
+        .compare .cmp-label {
+            position: absolute; top: 14px;
+            z-index: 3;
+            font-family: 'Sora', sans-serif;
+            font-size: 15px; font-weight: 700; letter-spacing: 0.5px;
+            color: #fff;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+            pointer-events: none;
+        }
+        .compare .cmp-label.before { left: 18px; }
+        .compare .cmp-label.after { right: 18px; }
+        .compare .divider {
+            position: absolute; top: 0; bottom: 0;
+            left: 50%; width: 2px;
+            background: #fff;
+            box-shadow: 0 0 12px rgba(0,0,0,0.5);
+            z-index: 4;
+            transform: translateX(-1px);
+            pointer-events: none;
+        }
+        .compare .handle {
+            position: absolute; top: 50%; left: 50%;
+            z-index: 5;
+            width: 42px; height: 42px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: rgba(8, 11, 20, 0.7);
+            border: 2px solid #fff;
+            backdrop-filter: blur(4px);
+            display: grid; place-items: center;
+            color: #fff; font-size: 16px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+            pointer-events: none;
         }
         .meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
         .meta {
@@ -236,28 +276,43 @@
     <header>
         <div class="logo">OrchidAI</div>
         <nav>
-            <a href="/">Home</a>
-            <a href="/history" class="active">History</a>
+            <a href="/">Beranda</a>
+            <a href="/history" class="active">Riwayat</a>
         </nav>
-        <a href="/" class="btn-cta">&#10022; Analyze Orchid</a>
+        <a href="/" class="btn-cta">&#10022; Klasifikasi</a>
     </header>
 
     <main>
         <div class="head">
-            <span class="badge">ANALYSIS COMPLETE</span>
-            <h1>Classification Results</h1>
-            <p>Our neural engine has successfully identified the specimen with high confidence based on floral structural markers and color distribution.</p>
+            <span class="badge">ANALISIS SELESAI</span>
+            <h1>Hasil Klasifikasi</h1>
+            <p>Mesin neural kami telah berhasil mengidentifikasi spesimen dengan tingkat kepercayaan tinggi berdasarkan penanda struktur bunga dan distribusi warna.</p>
         </div>
 
         <div class="grid">
             <!-- Left -->
             <div>
                 <div class="col-head">
-                    <div class="section-title">&#128444; Citra Input</div>
+                    <div class="section-title">&#128444; Citra Sebelum &amp; Sesudah Filtering Bilateral</div>
+                    <span class="id-tag">ID: {{ pred_id }}</span>
                 </div>
-                <div class="image-frame">
-                    <img src="/uploads/{{ filename }}" alt="Gambar Anggrek">
-                    <span class="source-tag">Source: User Upload</span>
+                <div class="compare" id="compare">
+                    <img class="after-layer" src="/uploads/{{ after_filename }}" alt="Sesudah Filtering Bilateral">
+                    <img class="before-layer" id="beforeLayer" src="/uploads/{{ filename }}" alt="Sebelum Filtering Bilateral">
+                    <span class="cmp-label before">SEBELUM</span>
+                    <span class="cmp-label after">SESUDAH</span>
+                    <div class="divider" id="cmpDivider"></div>
+                    <div class="handle" id="cmpHandle">&#8646;</div>
+                </div>
+                <div class="meta-row">
+                    <div class="meta">
+                        <div class="k">Resolusi</div>
+                        <div class="v">{{ resolution }}</div>
+                    </div>
+                    <div class="meta">
+                        <div class="k">Waktu Proses</div>
+                        <div class="v">{{ process_time }}</div>
+                    </div>
                 </div>
             </div>
 
@@ -268,16 +323,16 @@
                 </div>
                 <div class="genus-card">
                     <div>
-                        <div class="k">IDENTIFIED GENUS</div>
+                        <div class="k">GENUS YANG TERIDENTIFIKASI</div>
                         <div class="name">{{ label }}</div>
                     </div>
                     <div class="conf">
                         <div class="pct">{{ "%.0f"|format(confidence * 100) }}%</div>
-                        <div class="lbl">Confidence Level</div>
+                        <div class="lbl">Tingkat Kepercayaan</div>
                     </div>
                 </div>
 
-                <div class="xref-title">CROSS-REFERENCE PROBABILITIES</div>
+                <div class="xref-title">PROBABILITAS REFERENSI SILANG</div>
                 {% for name, prob in all_probs.items() if name != label %}
                 <div class="prob {% if prob < 0.02 %}dim{% endif %}">
                     <div class="top">
@@ -296,22 +351,61 @@
     </main>
 
     <section class="desc">
-        <div class="section-title"><span class="icon">&#129514;</span> Hasil Identifikasi</div>
+        <div class="section-title"><span class="icon">&#129514;</span> Karakteristik Botani</div>
         <h4>{{ label }}</h4>
-        <p>Spesies anggrek ini diidentifikasi dengan tingkat keyakinan <strong>{{ "%.1f"|format(confidence * 100) }}%</strong> menggunakan model computer vision berbasis MobileNetV2 yang telah dilatih pada dataset khusus anggrek.</p>
+        <p>{{ description }}</p>
+        <p style="margin-top:14px;">Spesimen ini diidentifikasi dengan tingkat keyakinan <strong>{{ "%.1f"|format(confidence * 100) }}%</strong> menggunakan model computer vision berbasis MobileNetV2 dengan pra-pemrosesan <strong>filtering bilateral</strong> yang menghaluskan noise sambil mempertahankan ketajaman tepi struktur bunga.</p>
     </section>
 
     <footer>
         <div>
             <div class="brand">OrchidAI</div>
-            <div class="copy">&copy; 2024 OrchidAI &middot; v2.4.0 High-Fidelity Neural Engine</div>
+            <div class="copy">&copy; 2026 OrchidAI &middot; v2.4.0 Mesin Neural Presisi Tinggi</div>
         </div>
         <div class="links">
-            <a href="#">Documentation</a>
-            <a href="#">API Status</a>
-            <a href="#">Privacy Protocol</a>
+            <a href="#">Dokumentasi</a>
+            <a href="#">Status API</a>
+            <a href="#">Protokol Privasi</a>
         </div>
     </footer>
 </div>
+
+<script>
+    (function () {
+        var el = document.getElementById('compare');
+        if (!el) return;
+        var before = document.getElementById('beforeLayer');
+        var divider = document.getElementById('cmpDivider');
+        var handle = document.getElementById('cmpHandle');
+        var dragging = false;
+
+        function setPosition(clientX) {
+            var rect = el.getBoundingClientRect();
+            var pct = ((clientX - rect.left) / rect.width) * 100;
+            pct = Math.max(0, Math.min(100, pct));
+            before.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
+            divider.style.left = pct + '%';
+            handle.style.left = pct + '%';
+        }
+
+        function onDown(e) {
+            dragging = true;
+            setPosition((e.touches ? e.touches[0] : e).clientX);
+        }
+        function onMove(e) {
+            if (!dragging) return;
+            if (e.cancelable) e.preventDefault();
+            setPosition((e.touches ? e.touches[0] : e).clientX);
+        }
+        function onUp() { dragging = false; }
+
+        el.addEventListener('mousedown', onDown);
+        el.addEventListener('touchstart', onDown, { passive: true });
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('touchmove', onMove, { passive: false });
+        window.addEventListener('mouseup', onUp);
+        window.addEventListener('touchend', onUp);
+    })();
+</script>
 </body>
 </html>

@@ -32,6 +32,37 @@ model = None
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def bilateral_filter(img_array, diameter=7, sigma_color=45.0, sigma_space=12.0):
+    """Filter bilateral berbasis numpy: menghaluskan noise sambil
+    mempertahankan tepi (edge-preserving), sesuai preprocessing model."""
+    arr = img_array.astype(np.float32)
+    h, w, c = arr.shape
+    radius = diameter // 2
+    result = np.zeros_like(arr)
+    weight_sum = np.zeros((h, w, 1), dtype=np.float32)
+    for dy in range(-radius, radius + 1):
+        for dx in range(-radius, radius + 1):
+            shifted = np.roll(np.roll(arr, dy, axis=0), dx, axis=1)
+            spatial = np.exp(-(dx * dx + dy * dy) / (2.0 * sigma_space ** 2))
+            diff = shifted - arr
+            rng = np.exp(-(np.sum(diff * diff, axis=2, keepdims=True)) / (2.0 * sigma_color ** 2))
+            weight = spatial * rng
+            result += shifted * weight
+            weight_sum += weight
+    return np.clip(result / np.maximum(weight_sum, 1e-8), 0, 255).astype(np.uint8)
+
+def make_filtered_preview(src_path):
+    """Buat citra hasil filtering bilateral untuk pratinjau sebelum/sesudah."""
+    src = Image.open(src_path).convert('RGB')
+    preview = src.copy()
+    preview.thumbnail((640, 640), Image.LANCZOS)
+    filtered = bilateral_filter(np.array(preview))
+    base, ext = os.path.splitext(os.path.basename(src_path))
+    after_name = f'{base}_after.jpg'
+    Image.fromarray(filtered).save(
+        os.path.join(app.config['UPLOAD_FOLDER'], after_name), quality=92)
+    return after_name
+
 def load_model():
     global model
     if model is None:
@@ -89,6 +120,7 @@ def index():
             try:
                 load_model()
                 idx, label, confidence, all_probs, resolution, process_time = predict_image(filepath)
+                after_filename = make_filtered_preview(filepath)
                 pred_id = f'ORD-{random.randint(1000, 9999)}-X'
                 save_history({
                     'filename': filename,
@@ -99,6 +131,7 @@ def index():
                 })
                 return render_template('result.html',
                                      filename=filename,
+                                     after_filename=after_filename,
                                      label=label,
                                      confidence=confidence,
                                      all_probs=all_probs,
