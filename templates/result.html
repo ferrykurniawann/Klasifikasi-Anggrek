@@ -9,15 +9,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #080b14;
-            --panel: #12162a;
-            --panel-2: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #eef1f8;
-            --muted: #8b93a7;
-            --faint: #5b6478;
+            --bg: #f4f6fb;
+            --panel: #ffffff;
+            --panel-2: rgba(15, 23, 42, 0.02);
+            --border: rgba(15, 23, 42, 0.10);
+            --text: #1a2036;
+            --muted: #5b6478;
+            --faint: #8b93a7;
             --accent: #6366f1;
-            --cyan: #22d3ee;
+            --cyan: #0891b2;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -33,8 +33,8 @@
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(45% 40% at 8% 6%, rgba(99, 102, 241, 0.22), transparent 60%),
-                radial-gradient(50% 45% at 100% 62%, rgba(34, 211, 238, 0.14), transparent 55%);
+                radial-gradient(45% 40% at 8% 6%, rgba(99, 102, 241, 0.10), transparent 60%),
+                radial-gradient(50% 45% at 100% 62%, rgba(34, 211, 238, 0.08), transparent 55%);
             z-index: 0;
             pointer-events: none;
         }
@@ -50,7 +50,7 @@
             padding: 22px 48px;
             border-bottom: 1px solid var(--border);
             backdrop-filter: blur(12px);
-            background: rgba(8, 11, 20, 0.75);
+            background: rgba(255, 255, 255, 0.78);
         }
         .wrap { padding-top: 82px; }
         .logo {
@@ -58,7 +58,7 @@
             font-weight: 800;
             font-size: 22px;
             letter-spacing: -0.5px;
-            background: linear-gradient(90deg, #c7d2fe, #a78bfa);
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -211,27 +211,27 @@
         .prob .pv { font-size: 13px; color: var(--muted); font-weight: 500; }
         .bar-track {
             height: 6px; border-radius: 999px;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(15, 23, 42, 0.08);
             overflow: hidden;
         }
         .bar-fill {
             height: 100%; border-radius: 999px;
             background: linear-gradient(90deg, #6366f1, #22d3ee);
         }
-        .prob.dim .bar-fill { background: rgba(255,255,255,0.14); }
+        .prob.dim .bar-fill { background: rgba(15, 23, 42, 0.16); }
 
         .btn-back {
             display: block; text-align: center;
             margin-top: 28px;
             padding: 16px;
             border-radius: 14px;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(15, 23, 42, 0.03);
             border: 1px solid var(--border);
             color: var(--text); text-decoration: none;
             font-size: 15px; font-weight: 600;
             transition: background 0.2s;
         }
-        .btn-back:hover { background: rgba(255, 255, 255, 0.09); }
+        .btn-back:hover { background: rgba(15, 23, 42, 0.07); }
 
         /* ---- Description ---- */
         .desc {
@@ -255,7 +255,7 @@
             border-top: 1px solid var(--border);
             display: flex; align-items: flex-end; justify-content: space-between;
         }
-        footer .brand { font-family: 'Sora', sans-serif; font-weight: 700; color: #c7d2fe; font-size: 18px; }
+        footer .brand { font-family: 'Sora', sans-serif; font-weight: 700; color: #6366f1; font-size: 18px; }
         footer .copy { color: var(--muted); font-size: 13px; margin-top: 4px; }
         footer .links { display: flex; gap: 28px; }
         footer .links a { color: var(--muted); text-decoration: none; font-size: 13.5px; }

@@ -9,16 +9,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #080b14;
-            --bg-2: #0d1120;
-            --panel: rgba(22, 27, 44, 0.55);
-            --panel-solid: #12162a;
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #eef1f8;
-            --muted: #8b93a7;
+            --bg: #f4f6fb;
+            --bg-2: #eaeef7;
+            --panel: rgba(255, 255, 255, 0.72);
+            --panel-solid: #ffffff;
+            --border: rgba(15, 23, 42, 0.10);
+            --text: #1a2036;
+            --muted: #5b6478;
             --accent: #6366f1;
             --accent-2: #8b5cf6;
-            --cyan: #22d3ee;
+            --cyan: #0891b2;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -34,8 +34,8 @@
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(70% 55% at 12% 8%, rgba(59, 78, 209, 0.35), transparent 60%),
-                radial-gradient(60% 50% at 92% 35%, rgba(124, 58, 237, 0.28), transparent 60%),
+                radial-gradient(70% 55% at 12% 8%, rgba(99, 102, 241, 0.12), transparent 60%),
+                radial-gradient(60% 50% at 92% 35%, rgba(139, 92, 246, 0.10), transparent 60%),
                 radial-gradient(50% 40% at 50% 100%, rgba(34, 211, 238, 0.06), transparent 60%);
             z-index: 0;
             pointer-events: none;
@@ -53,7 +53,7 @@
             padding: 22px 48px;
             border-bottom: 1px solid var(--border);
             backdrop-filter: blur(12px);
-            background: rgba(8, 11, 20, 0.75);
+            background: rgba(255, 255, 255, 0.78);
         }
         .wrap { padding-top: 82px; }
         .logo {
@@ -61,7 +61,7 @@
             font-weight: 800;
             font-size: 22px;
             letter-spacing: -0.5px;
-            background: linear-gradient(90deg, #c7d2fe, #a78bfa);
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -108,7 +108,7 @@
             border: 1px solid var(--border);
             border-radius: 28px;
             backdrop-filter: blur(24px);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 30px 80px rgba(30, 41, 99, 0.12);
             text-align: center;
         }
         .hero h1 {
@@ -138,10 +138,10 @@
 
         /* ---------- Upload ---------- */
         .upload-area {
-            border: 1.5px dashed rgba(255, 255, 255, 0.16);
+            border: 1.5px dashed rgba(15, 23, 42, 0.18);
             border-radius: 20px;
             padding: 48px 24px;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(15, 23, 42, 0.02);
             cursor: pointer;
             transition: all 0.25s;
             position: relative;
@@ -156,7 +156,7 @@
             margin: 0 auto 20px;
             display: grid; place-items: center;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(15, 23, 42, 0.04);
             border: 1px solid var(--border);
             font-size: 26px;
         }
@@ -172,7 +172,7 @@
             margin-top: 22px;
             padding: 11px 26px;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(15, 23, 42, 0.04);
             border: 1px solid var(--border);
             font-size: 14px;
             font-weight: 600;
@@ -213,11 +213,11 @@
         .btn-primary:hover { transform: translateY(-1px); }
         .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
         .btn-ghost {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(15, 23, 42, 0.03);
             border-color: var(--border);
             color: var(--text);
         }
-        .btn-ghost:hover { background: rgba(255, 255, 255, 0.08); }
+        .btn-ghost:hover { background: rgba(15, 23, 42, 0.07); }
 
         /* ---------- Feature cards ---------- */
         .features {
@@ -262,7 +262,7 @@
             align-items: flex-end;
             justify-content: space-between;
         }
-        footer .brand { font-family: 'Sora', sans-serif; font-weight: 700; color: #c7d2fe; font-size: 18px; }
+        footer .brand { font-family: 'Sora', sans-serif; font-weight: 700; color: #6366f1; font-size: 18px; }
         footer .copy { color: var(--muted); font-size: 13px; margin-top: 4px; }
         footer .links { display: flex; gap: 30px; }
         footer .links a { color: var(--muted); text-decoration: none; font-size: 13.5px; transition: color 0.2s; }
