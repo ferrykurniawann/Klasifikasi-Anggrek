@@ -1,55 +1,16 @@
 [
   {
-    "filename": "PAL100.jpg",
-    "label": "Phalaenopsis",
-    "confidence": 0.9893,
+    "filename": "V098.jpg",
+    "label": "Vanda",
+    "confidence": 0.9998,
     "all_probs": {
-      "Cattleya": 0.0008,
-      "Dendrobium": 0.0059,
+      "Cattleya": 0.0001,
+      "Dendrobium": 0.0001,
       "Grammatophyllum": 0.0,
-      "Phalaenopsis": 0.9893,
-      "Vanda": 0.004
+      "Phalaenopsis": 0.0,
+      "Vanda": 0.9998
     },
-    "timestamp": "2026-07-25 17:44:54"
-  },
-  {
-    "filename": "C100.jpg",
-    "label": "Cattleya",
-    "confidence": 0.6876,
-    "all_probs": {
-      "Cattleya": 0.6876,
-      "Dendrobium": 0.0095,
-      "Grammatophyllum": 0.0101,
-      "Phalaenopsis": 0.2854,
-      "Vanda": 0.0075
-    },
-    "timestamp": "2026-07-25 17:37:18"
-  },
-  {
-    "filename": "C100.jpg",
-    "label": "Cattleya",
-    "confidence": 0.6876,
-    "all_probs": {
-      "Cattleya": 0.6876,
-      "Dendrobium": 0.0095,
-      "Grammatophyllum": 0.0101,
-      "Phalaenopsis": 0.2854,
-      "Vanda": 0.0075
-    },
-    "timestamp": "2026-07-25 12:41:36"
-  },
-  {
-    "filename": "C100.jpg",
-    "label": "Cattleya",
-    "confidence": 0.6876,
-    "all_probs": {
-      "Cattleya": 0.6876,
-      "Dendrobium": 0.0095,
-      "Grammatophyllum": 0.0101,
-      "Phalaenopsis": 0.2854,
-      "Vanda": 0.0075
-    },
-    "timestamp": "2026-07-22 12:39:20"
+    "timestamp": "2026-07-29 16:53:42"
   },
   {
     "filename": "V098.jpg",
@@ -62,136 +23,6 @@
       "Phalaenopsis": 0.0,
       "Vanda": 0.9998
     },
-    "timestamp": "2026-07-22 12:37:17"
-  },
-  {
-    "filename": "V098.jpg",
-    "label": "Vanda",
-    "confidence": 0.9998,
-    "all_probs": {
-      "Cattleya": 0.0001,
-      "Dendrobium": 0.0001,
-      "Grammatophyllum": 0.0,
-      "Phalaenopsis": 0.0,
-      "Vanda": 0.9998
-    },
-    "timestamp": "2026-07-22 11:51:42"
-  },
-  {
-    "filename": "V098.jpg",
-    "label": "Vanda",
-    "confidence": 0.9998,
-    "all_probs": {
-      "Cattleya": 0.0001,
-      "Dendrobium": 0.0001,
-      "Grammatophyllum": 0.0,
-      "Phalaenopsis": 0.0,
-      "Vanda": 0.9998
-    },
-    "timestamp": "2026-07-21 17:18:23"
-  },
-  {
-    "filename": "C100.jpg",
-    "label": "Cattleya",
-    "confidence": 0.6876,
-    "all_probs": {
-      "Cattleya": 0.6876,
-      "Dendrobium": 0.0095,
-      "Grammatophyllum": 0.0101,
-      "Phalaenopsis": 0.2854,
-      "Vanda": 0.0075
-    },
-    "timestamp": "2026-07-21 15:26:51"
-  },
-  {
-    "filename": "V098.jpg",
-    "label": "Vanda",
-    "confidence": 0.9998,
-    "all_probs": {
-      "Cattleya": 0.0001,
-      "Dendrobium": 0.0001,
-      "Grammatophyllum": 0.0,
-      "Phalaenopsis": 0.0,
-      "Vanda": 0.9998
-    },
-    "timestamp": "2026-07-21 15:26:27"
-  },
-  {
-    "filename": "V098.jpg",
-    "label": "Vanda",
-    "confidence": 0.9998,
-    "all_probs": {
-      "Cattleya": 0.0001,
-      "Dendrobium": 0.0001,
-      "Grammatophyllum": 0.0,
-      "Phalaenopsis": 0.0,
-      "Vanda": 0.9998
-    },
-    "timestamp": "2026-07-21 12:25:33"
-  },
-  {
-    "filename": "V098.jpg",
-    "label": "Vanda",
-    "confidence": 0.9998,
-    "all_probs": {
-      "Cattleya": 0.0001,
-      "Dendrobium": 0.0001,
-      "Grammatophyllum": 0.0,
-      "Phalaenopsis": 0.0,
-      "Vanda": 0.9998
-    },
-    "timestamp": "2026-07-21 12:23:55"
-  },
-  {
-    "filename": "PAL100.jpg",
-    "label": "Phalaenopsis",
-    "confidence": 0.9893,
-    "all_probs": {
-      "Cattleya": 0.0008,
-      "Dendrobium": 0.0059,
-      "Grammatophyllum": 0.0,
-      "Phalaenopsis": 0.9893,
-      "Vanda": 0.004
-    },
-    "timestamp": "2026-07-21 12:23:43"
-  },
-  {
-    "filename": "C100.jpg",
-    "label": "Cattleya",
-    "confidence": 0.6876,
-    "all_probs": {
-      "Cattleya": 0.6876,
-      "Dendrobium": 0.0095,
-      "Grammatophyllum": 0.0101,
-      "Phalaenopsis": 0.2854,
-      "Vanda": 0.0075
-    },
-    "timestamp": "2026-07-21 12:23:34"
-  },
-  {
-    "filename": "D100.jpg",
-    "label": "Dendrobium",
-    "confidence": 0.9693,
-    "all_probs": {
-      "Cattleya": 0.0278,
-      "Dendrobium": 0.9693,
-      "Grammatophyllum": 0.0008,
-      "Phalaenopsis": 0.0011,
-      "Vanda": 0.001
-    },
-    "timestamp": "2026-07-21 12:22:20"
-  },
-  {
-    "filename": "G093.jpg",
-    "label": "Grammatophyllum",
-    "confidence": 0.5895,
-    "all_probs": {
-      "Cattleya": 0.3498,
-      "Dendrobium": 0.0265,
-      "Grammatophyllum": 0.5895,
-      "Phalaenopsis": 0.0181,
-      "Vanda": 0.0161
-    },
-    "timestamp": "2026-07-21 12:20:54"
+    "timestamp": "2026-07-29 16:51:22"
   }
 ]
